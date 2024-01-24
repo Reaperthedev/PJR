@@ -1,0 +1,18 @@
+.Menu-choose {
+    margin: auto;
+    width: 35%;
+    border: 3px solid rgb(83, 83, 83);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 15%;
+}
+
+.Menu-choose input{
+    border: 2px solid rgb(83, 83, 83);
+    height: 50px;
+    width: 60%;
+    font-size: large;
+    border-radius: 5px;
+    margin: 5px;
+}
