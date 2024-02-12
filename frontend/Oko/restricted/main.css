@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+
+}
+
+.Conrainer {
+  display: flex;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  border-right: 3px solid rgb(83, 83, 83);
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: white;
+  padding-top: 20px;
+}
+
+.sidebar a {
+  padding: 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: rgb(83, 83, 83);
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  border: 1px solid rgb(83, 83, 83);
+  border-radius: 5px;
+}
+
+/* Your existing styles */
+
+.boxSelectContainer {
+  display: flex;
+  align-items: center;
+  /* Center the boxes vertically */
+  justify-content: center;
+  /* Center the boxes horizontally */
+  height: 100vh;
+  /* Set height to full viewport height */
+  margin: 0 auto;
+  /* Center the container horizontally */
+}
+
+/* Your existing styles */
+
+.box {
+  border: 3px solid rgb(83, 83, 83);
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  width: 25em;
+  height: 30em;
+  margin: 0 1em;
+  /* Adjusted margin for spacing between boxes */
+}
+
+.box input {
+  border: 2px solid rgb(83, 83, 83);
+  height: 50px;
+  width: 60%;
+  font-size: large;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+.sidebar-lower {
+  vertical-align: bottom;
+}
+
+.sidebar-lower p{
+  text-align: center;
+}
+
+.timer {
+  color: red;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="login">
+        <form id="loginForm">
+            <h1>Login</h1>
+            <p>Verwaltungs Pin</p>
+            <input type="password" placeholder="Pin" name="code_Oko" id="code_Oko">
+            <input type="submit" value="Login"> <br>
+            <a href="../index.html">zurück</a>
+        </form>
+    </div>
+
+    <!-- Include the staticPin.js file with the correct path -->
+    <script src="/Oko/staticPin.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('loginForm');
+
+            loginForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const pinInput = document.getElementById('code_Oko');
+                const pinValue = pinInput.value;
+
+                // Compare the entered PIN with the static PIN
+                if (pinValue === staticPin) {
+                    // Redirect or perform other actions on successful login
+                    window.location.href = '/Oko/restricted'; // Adjust the path as needed
+                } else {
+                    alert('Invalid credentials. Please try again.'); // Adjust the error handling as needed
+                }
+            });
+        });
+    </script>
+</body>
+</html>

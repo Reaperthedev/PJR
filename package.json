@@ -1,0 +1,26 @@
+{
+  "name": "pjr",
+  "version": "1.0.0",
+  "description": "Sport Kurz Wahlsystem",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Reaperthedev/PJR.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Reaperthedev/PJR/issues"
+  },
+  "homepage": "https://github.com/Reaperthedev/PJR#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-sessions": "^1.0.6"
+  }
+}
