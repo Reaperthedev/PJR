@@ -1,56 +1,24 @@
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+const uuidv4 = require('uuid').v4;
+const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
 const PORT = 7080;
 
-// Use cookie-parser middleware to handle cookies
-app.use(cookieParser());
-app.use(express.json()); // Enable JSON body parsing
+const sessions = {};
 
-// Serve static files from the 'frontend' directory
+app.use(express.json()); // Enable JSON body parsing
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// Dummy user credentials for illustration purposes
-const validUser = {
-  username: 'exampleUser',
-  password: 'examplePassword',
-};
-
-// Middleware to check if the user has a valid session before accessing protected pages
-const authenticateUser = (req, res, next) => {
-  const userToken = req.cookies.userToken;
-
-  // Check if the user has a valid session
-  if (userToken && isValidUserToken(userToken)) {
-    return next();
-  } else {
-    // Redirect to the login page if the session cookie is missing or invalid
-    return res.redirect('/frontend/index.html');
+// Middleware to check if session cookie exists
+const checkSession = (req, res, next) => {
+  const sessionID = req.headers.cookie?.split('=')[1];
+  if (!sessionID || !sessions[sessionID]) {
+    return res.redirect('/');
   }
-};
-
-// Function to validate the userToken (you should implement this based on your needs)
-const isValidUserToken = (userToken) => {
-  // Add your validation logic here
-  // For example, check if the token is not expired or matches a valid user session
-  return true; // Placeholder, replace with your actual validation logic
-};
-
-// Middleware to check if the user has a valid session on every request
-app.use((req, res, next) => {
-  // Check if the user has a valid session
-  const userToken = req.cookies.userToken;
-
-  if (!userToken && req.path !== '/frontend/index.html') {
-    // Redirect to the login page if the session cookie is missing and the request is not for the login page
-    return res.redirect('/frontend/index.html');
-  }
-
-  // Continue to the next middleware or route handler
   next();
-});
+};
 
 // Route to serve the login page
 app.get('/', (req, res) => {
@@ -58,28 +26,37 @@ app.get('/', (req, res) => {
 });
 
 // Route to handle login logic
-app.post('/login', (req, res) => {
-  // Replace this with your actual login logic
-  const { password } = req.body;
+app.post('/LoginOko', (req, res) => {
+  const { usernameOko, passwordOko } = req.body;
 
-  if (password === validUser.password) {
-    // Set a cookie with a one-hour expiration time (in milliseconds)
-    const oneHour = 60 * 60 * 1000;
-    res.cookie('userToken', 'yourTokenValue', { maxAge: oneHour, httpOnly: true });
-
-    res.status(200).json({ message: 'Login successful' });
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' });
+  if (usernameOko !== 'admin' || passwordOko !== 'admin') {
+    return res.status(401).send('Invalid Password');
   }
+
+  const sessionID = uuidv4();
+  sessions[sessionID] = { usernameOko, userID: 1 };
+  res.set('Set-Cookie', `session=${sessionID}`);
+  res.send('success');
 });
 
-
-// Protected route example
-app.get('/restricted', authenticateUser, (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'Oko', 'restricted'));
+// Route to handle logout logic
+app.post('/LogoutOko', (req, res) => {
+  const sessionID = req.headers.cookie?.split('=')[1];
+  delete sessions[sessionID];
+  res.clearCookie('session');
+  res.redirect('/');
 });
 
-// You can add more routes for other restricted files in the 'restricted' directory as needed
+// Restricted route requiring session
+app.get('/Oko/restricted', checkSession, (req, res) => {
+  const sessionID = req.headers.cookie?.split('=')[1];
+  const userID = sessions[sessionID].userID;
+  res.send([{
+    id: 1,
+    title: 'lol',
+    userID
+  }]);
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
