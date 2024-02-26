@@ -1,2 +1,2 @@
 # PJR
-Sport Kurz Wahlsystem
+Sport Kurs Wahlsystem
