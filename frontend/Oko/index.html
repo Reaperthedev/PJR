@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="login.css">
 </head>
+
 <body>
     <div class="login">
         <form id="loginForm">
@@ -19,10 +21,6 @@
         </form>
     </div>
 
-    <!-- Include the staticPin.js file with the correct path -->
-    <script src="/Oko/staticPin.js"></script>
-
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const loginForm = document.getElementById('loginForm');
@@ -33,15 +31,28 @@
                 const pinInput = document.getElementById('code_Oko');
                 const pinValue = pinInput.value;
 
-                // Compare the entered PIN with the static PIN
-                if (pinValue === staticPin) {
-                    // Redirect or perform other actions on successful login
-                    window.location.href = '/Oko/restricted'; // Adjust the path as needed
-                } else {
-                    alert('Invalid credentials. Please try again.'); // Adjust the error handling as needed
-                }
+                // Send PIN to server for verification
+                fetch('/LoginOko', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ usernameOko: pinValue, passwordOko: pinValue }) // Send both username and PIN
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Redirect or perform other actions on successful login
+                            window.location.href = '/Oko/restricted'; // Adjust the path as needed
+                        } else {
+                            alert('Invalid credentials. Please try again.'); // Adjust the error handling as needed
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             });
         });
     </script>
 </body>
+
 </html>

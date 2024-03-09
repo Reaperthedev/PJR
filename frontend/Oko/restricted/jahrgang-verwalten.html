@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="jahrgang-verwalten.css">
+    <script src="cookie.js"></script>
 </head>
 <body>
     <div class="sidebar">
@@ -18,19 +19,22 @@
         </div>
     </div>
     <div class="jahrgang">
-        <form method="">
-          <h1>Jahrgang Verwalten</h1>
-          <p>Jahregänge</p>  
-          <label>
-            Jahregang
-            <input type="text" placeholder="Von - Bis">
-            <br>
-            <label>Wählen Sie die Schülerliste aus
-                <input name="datei" type="file" size="50" accept=".csv"> 
+        <form method="POST" action="/uploadCSV" enctype="multipart/form-data">
+            <h1>Jahrgang Verwalten</h1>
+            <p>Jahrgänge</p>
+            <label>
+                Jahrgang
+                <!--eintragen des Jahrganges in Form von: Von - Bis-->
+                <input type="text" name="jahrgang-name" placeholder="Von - Bis">
+                <br>
+                <label>Wählen Sie die Schülerliste aus
+                    <!--Auswahl einer .csv Als Import der Schülerliste-->
+                    <input name="csvFile" type="file" accept=".csv">
+                </label>
+                <input type="submit" value="Submit">
+                <a href="main.html">zurück</a>
             </label>
-            <input type="button" value="Submit">
-                <a href="main.html">zurück</a> 
-        </label>
         </form>
+        
     </div>
 </body>
