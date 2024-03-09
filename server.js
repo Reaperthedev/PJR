@@ -64,9 +64,6 @@ app.get('/Oko/restricted', checkSession, (req, res) => {
 });
 
 
-// Your existing imports...
-
-// Route to handle CSV file upload
 // Route to handle CSV file upload
 app.post('/uploadCSV', upload.single('csvFile'), (req, res) => {
   const jahrgangName = req.body['jahrgang-name']; // Extract the Jahrgang name from the request
@@ -77,6 +74,15 @@ app.post('/uploadCSV', upload.single('csvFile'), (req, res) => {
 
   const db = new sqlite3.Database('mos.db');
 
+    const sql_j = `INSERT INTO ${sanitizeTableName(jahrgangName)} (schueler_id, nachName, vorName, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2) VALUES (?, ?, ?, ?)`;
+    db.run(sql_j, [schueler_id, nachName, vorName, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2], function(err) {
+      if (err) {
+        return res.status(500).send(err.message);
+      }
+      res.send('${sanitizeTableName(jahrgangName)} added successfully.');
+    });
+
+/*
   // Open the CSV file and insert data into the database
   fs.createReadStream(req.file.path)
       .pipe(csv())
@@ -101,13 +107,33 @@ app.post('/uploadCSV', upload.single('csvFile'), (req, res) => {
           // Respond with success message
           res.send('CSV file uploaded successfully.');
       });
-});
+*/
+    });
 
 // Function to sanitize table name
 function sanitizeTableName(name) {
   // Remove special characters and spaces, and convert to lowercase
   return name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 }
+
+const createJahrgangsTable = () => {
+  const sql_j = `
+    CREATE TABLE IF NOT EXISTS ${sanitizeTableName(jahrgangName)} (
+      schueler_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nachName varchar(255),
+      vorName varchar(255),
+      akStuffe varchar(255),
+      endStuffe varchar(255),
+      wahl_1 varchar(255),
+      wahl_2 varchar(255),
+      wahl_3 varchar(255),
+      wahl_4 varchar(255),
+      e_wahl_1 varchar(255),
+      e_wahl_2 varchar(255)
+    )
+  `;
+  return db.run(sql_j);
+};
 
 const createSportkurseTable = () => {
   const sql = `
@@ -144,7 +170,7 @@ app.get('/getSportkurse', (req, res) => {
     }
     res.json(rows);
   });
-});
+});Frontend
 
 // Route to update a sportkurs
 app.put('/updateSportkurs/:id', (req, res) => {
