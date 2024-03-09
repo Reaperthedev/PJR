@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportkurz Verwaltung</title>
+    <script src="cookie.js"></script>
+
+    
+    
+</head>
+
+<body>
+    <!--Die Sidebar um schnell auf die anderen Listen zuzugreifen-->
+    <div class="main">
+        <div class="box form-box">
+            <form method="" id="sportkursForm">
+                <header>Sportkurse Verwalten</header>
+                <div class="">              
+                    <table>
+                        <thead>
+                            <th>Sport</th>
+                            <th>Spiele</th>
+                        </thead>
+                        <tr>
+                            <td>Badminton</td>
+                            <td>Spiele</td>
+                        </tr>
+                        <tr>
+                            <td>Leichtatletick</td>
+                            <td>Kein Speil</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="field input">
+                    <label>
+                        Sportkurs
+                        <input type="text">
+                    </label>
+                </div>
+
+                <div class="field input">
+                    <label>
+                        Sportkurskürzel
+                        <input type="text">
+                    </label>
+                </div>
+                
+                <div class="field input">
+                <label>
+                    Anzahl Schüler
+                    <input type="number">
+                </label>
+                </div>
+                <div class="field input">
+                    <label for="sportart">Sportart</label>
+                    <select name="sportart" id="sportart">
+                        <option value="ballsport">Spielen</option>
+                        <option value="kein-ballsport">kein Spielen</option>
+                    </select>
+                </div>
+                
+                <div class="field input">
+                <input type="button" class="btn" value="Submit">
+                <a href="index.html">zurück</a>
+                </div>
+            </form>
+            <form id="sportkursDelete">
+                <div class="field input">
+                    <label for="sportkursSelect">Sportart Löchen</label>
+                    <select name="sportkursSelect" id="sportkursSelect">
+                        <option value="">Hier auswehlen</option>
+                    </select>
+                </div>
+
+                <div class="field input">
+                <input type="button" class="btn" value="Submit"></form>
+                </div>
+        </div>
+        <!--Sidebar um die Listen einzusehen / zu verwalten (bleibt auch auf den anderen Seiten vorhanden)-->
+        <div class="sidebar">
+            <a href="index.html">Startseite</a>
+            <a href="sportkurs.html">Sportkurse</a>
+            <a href="jahrgang-verwalten.html">Jahrgang verwalten</a>
+            <a href="">Jahrgang einsehen</a>
+            <div class="sidebar-lower">
+                
+                <a href="#contact">Logout</a>
+            </div>
+          </div>
+      </div>
+    </div>
+    <script>
+        async function deleteSportkurs() {
+            const selectElement = document.getElementById('sportkursSelect');
+            const selectedId = selectElement.value;
+    
+            if (!selectedId) {
+                alert('Bitte wählen Sie einen Sportkurs zum Löschen aus.');
+                return;
+            }
+    
+            try {
+                const response = await fetch(`/deleteSportkurs/${selectedId}`, {
+                    method: 'DELETE',
+                });
+                if (!response.ok) {
+                    throw new Error('Löschen des Sportkurses fehlgeschlagen.');
+                }
+                alert('Sportkurs erfolgreich gelöscht.');
+                // Optionally, update the UI or perform any other action after successful deletion
+            } catch (error) {
+                console.error('Fehler:', error);
+                alert('Löschen des Sportkurses fehlgeschlagen. Bitte versuchen Sie es erneut.');
+            }
+        }
+    
+        // Function to populate the select dropdown with sportkurs options
+        async function populateSportkursOptions() {
+            try {
+                const response = await fetch('/getSportkurse');
+                if (!response.ok) {
+                    throw new Error('Fehler beim Abrufen der Sportkurse.');
+                }
+                const data = await response.json();
+    
+                const selectElement = document.getElementById('sportkursSelect');
+                selectElement.innerHTML = '<option value="">Wählen Sie einen Sportkurs aus</option>';
+                data.forEach(sportkurs => {
+                    const option = document.createElement('option');
+                    option.value = sportkurs.id;
+                    option.textContent = sportkurs.sportkurs;
+                    selectElement.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Fehler:', error);
+                alert('Fehler beim Abrufen der Sportkurse. Bitte versuchen Sie es erneut.');
+            }
+        }
+    
+        // Call the function to populate sportkurs options when the page loads
+        window.onload = populateSportkursOptions;
+    </script>
+    
+    <script>
+        document.getElementById('sportkursForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            try {
+                const response = await fetch('/addSportkurs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formObject)
+                });
+                const data = await response.json();
+                console.log(data);
+                // Handle success or show response message
+            } catch (error) {
+                console.error('Error:', error);
+                // Handle error or show error message
+            }
+        });
+
+    </script>
+</body>

@@ -1,0 +1,44 @@
+.conrainer {
+    display: flex;
+  }
+.main {
+    margin: auto;
+    width: 35%;
+    border: 3px solid rgb(83, 83, 83);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 15%;
+    margin-right: 1em;
+    width: 40em;
+    overflow-wrap: break-word;
+    line-height: 200%;
+    
+}
+.regel {
+    margin: auto;
+    width: 35%;
+    border: 3px solid rgb(83, 83, 83);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 5%;
+    margin-left: 5em;
+    width: 40em;
+    overflow-wrap: break-word;
+    
+}
+
+.sidebar a {
+    padding: 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: rgb(83, 83, 83);
+    display: block;
+    transition: 0.3s;
+  }
+  
+.sidebar a:hover {
+    border: 1px solid rgb(83, 83, 83);
+    border-radius: 5px;
+  } 
