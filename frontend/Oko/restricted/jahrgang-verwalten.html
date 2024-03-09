@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/frontend/main.css">
+    <script src="cookie.js"></script>
+    
+</head>
+<body>
+    
+    <div class="main">
+        <div class="box form-box">
+            <form method="">
+                <header>Jahrgang Verwalten</header>
+                <div class="tabelle">              
+                    <table>
+                        <thead>
+                            <th>Jahregang</th>
+                        </thead>
+                        <tr>
+                            <td>1992-2000</td>
+                        </tr>
+                        <tr>
+                            <td>2000-2020</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="field input">
+                    <label>
+                        Jahregang
+                        <!--eintragen des Jahrganges in Form von: Von - Bis-->
+                        <input type="text" placeholder="Von - Bis">
+                    </label>
+                </div>
+
+                <div class="field">
+                <label>Wählen Sie die Schülerliste aus
+                    <!--Auswahl einer .csv Als Import der Schülerliste-->
+                    <input name="datei" type="file" size="50" accept=".csv"> 
+                </label>
+                </div>
+
+                <div class="field input">
+                <input type="button" class="btn" value="Submit">
+                </div>
+
+                <div class="links">
+                <a href="index.html">zurück</a>
+                </div>
+                </label>
+                 
+            </form>
+        </div>
+        <div class="Conrainer">
+            <!--Sidebar um die Listen einzusehen / zu verwalten (bleibt auch auf den anderen Seiten vorhanden)-->
+            <div class="sidebar">
+                <a href="index.html">Startseite</a>
+                <a href="sportkurs.html">Sportkurse</a>
+                <a href="jahrgang-verwalten.html">Jahrgang verwalten</a>
+                <a href="">Jahrgang einsehen</a>
+                <div class="sidebar-lower">
+                    <a href="#contact">Logout</a>
+                </div>
+              </div>
+    </div>
+</body>
