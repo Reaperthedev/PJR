@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="sportkurs.css">
+    <link rel="stylesheet" href="sportangebot.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sportkurz Verwaltung</title>
     <script src="cookie.js"></script>
     
 </head>
-
 <body>
-    <!--Die Sidebar um schnell auf die anderen Listen zuzugreifen-->
     <div class="Conrainer">
         <!--Sidebar um die Listen einzusehen / zu verwalten (bleibt auch auf den anderen Seiten vorhanden)-->
         <div class="sidebar">
@@ -24,24 +19,17 @@
                 <a href="#contact">Logout</a>
             </div>
           </div>
+            <p>Ihre Lizenz läuft in <br> </p><p class="timer">25</p><p> Tagen aus.</p>
+            <a href="#contact">Logout</a>
+        </div>
       </div>
         <div class="sportanzeigen">
             <form method="">
                 <h1>Sportkurse Verwalten</h1>
-                <p>Vorherige Sportkurse</p>
+                <p>Bisheriges Angebot</p>
                 <label>
                     Sportkurs
                     <input type="text">
-                </label>
-                <br>
-                <label>
-                    Sportkurskürzel
-                    <input type="text">
-                </label>
-                <br>
-                <label>
-                    Anzahl Schüler
-                    <input type="number">
                 </label>
                 <br>
                 <label for="sportart">Sportart</label>
@@ -52,15 +40,7 @@
                 <br>
                 <input type="button" value="Submit">
                 <a href="main.html">zurück</a>
-                
             </form>
-            <form>
-                <label for="sportart">Sportart Löchen</label>
-                <select name="sportart" id="sportart">
-                    <option value="">Hier auswehlen</option>
-                    
-                </select>
-                <input type="button" value="Submit"></form>
         </div>
     </div>
 </body>
