@@ -257,6 +257,9 @@ app.get('/eintragen', (req, res) => {
                         console.log("LALALA")
                         console.log(rows);
                         console.log(row.name);
+
+                        db.exec(`UPDATE ${row.name} SET wahl_1='${wahl1}', wahl_2='${wahl2}', wahl_3='${wahl3}', wahl_4='${wahl4}', e_wahl_1='${wahl5}', e_wahl_2='${wahl6}'  WHERE uuid='${uuid}'`);
+/*
                         const sql_j = `UPDATE ${row.name} SET wahl_1=?, wahl_2=?, wahl_3=?, wahl_4=?, e_wahl_1=?, e_wahl_2=? WHERE uuid=?`;
                         db.run(sql_j, [wahl1, wahl2, wahl3, wahl4, wahl5, wahl6], function (err) {
                             if (err) {
@@ -266,7 +269,7 @@ app.get('/eintragen', (req, res) => {
                             //res.send('{jahrgangName} added successfully.');
                         });
                         db.close();
-                        console.log("CLOSED");
+                        console.log("CLOSED");*/
                     } else {
                         console.log("NO USER") // Indicate user not found
                         // Warum du werden ausgeführt? Keine Ahnung
