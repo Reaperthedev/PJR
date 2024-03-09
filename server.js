@@ -117,7 +117,7 @@ function sanitizeTableName(name) {
 }
 
 const createJahrgangsTable = () => {
-  const sql_j = `
+  const sql_j = `   
     CREATE TABLE IF NOT EXISTS ${sanitizeTableName(jahrgangName)} (
       schueler_id INTEGER PRIMARY KEY AUTOINCREMENT,
       nachName varchar(255),
@@ -170,7 +170,7 @@ app.get('/getSportkurse', (req, res) => {
     }
     res.json(rows);
   });
-});Frontend
+});
 
 // Route to update a sportkurs
 app.put('/updateSportkurs/:id', (req, res) => {
@@ -200,6 +200,9 @@ app.delete('/deleteSportkurs/:id', (req, res) => {
 
 // Call createSportkurseTable function when setting up the database
 createSportkurseTable();
+
+// Call createSportkurseTable function when setting up the database
+createJahrgangsTable();
 
 
 
