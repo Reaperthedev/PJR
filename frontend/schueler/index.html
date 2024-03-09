@@ -7,25 +7,50 @@
     <link rel="stylesheet" href="../login.css">
 </head>
 <body>
-    <!--Login für Schüler-->
-    <div class="login">
-        <div class="box form-box">
-            <form action="">
-                <header>Login</header>
-                <div class="field input">
-                    <p>Erhaltenen Pin von den Lehrkräften eingeben</p>
-                    <!--Eingbefeld für den jweiligen Pin der Schüler-->
-                    <input type="password" placeholder="Pin" name="code_schueler" id="code_schueler">
-                </div>
+<!--Login für Schüler-->
+<div class="login">
+    <div class="box form-box">
+        <form >
+            <header>Login</header>
+            <div class="field input">
+                <p>Erhaltenen Pin von den Lehrkräften eingeben</p>
+                <!--Eingbefeld für den jweiligen Pin der Schüler-->
+                <input type="password" placeholder="Pin" name="pin" id="schueler_pin">
+            </div>
 
-                <div class="field input">
-                    <input type="submit" class="btn" value="Login" >
-                </div>
-                <div class="links">
-                    <a href="../index.html">zurück</a>
-                </div>
-            </form>
-        </div>
+            <div class="field input">
+                <input onclick="login()" class="btn" value="Login">
+            </div>
+            <div class="links">
+                <a href="../index.html">zurück</a>
+            </div>
+        </form>
     </div>
+</div>
 </body>
+<script>
+    function login() {
+        const pin = document.getElementById("schueler_pin").value;
+        console.log(pin);
+
+        const url = 'http://localhost:7080/login_schueler?pin=' + pin; // Change URL to use query parameter
+        console.log(url);
+
+        fetch(url)
+            .then(response => {
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.cookie = "user="+data;
+                window.location.href ="Wahlen";
+                console.log(data);
+                console.log('request successful:', data);
+                // Handle the response data here
+            });
+    }
+</script>
 </html>

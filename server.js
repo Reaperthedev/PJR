@@ -5,6 +5,8 @@ const sqlite3 = require('sqlite3').verbose(); // sqlite3-Modul wird eingebunden,
 const multer = require('multer');
 const csv = require('csv-parser');
 const fs = require('fs');
+const cors = require('cors');
+
 
 const db = new sqlite3.Database('mos.db');
 // Set up storage for uploaded files
@@ -18,11 +20,13 @@ const storage = multer.diskStorage({
 });
 
 // Create the multer instance
-const upload = multer({ storage: storage });const app = express(); // Eine Express-App wird erstellt
+const upload = multer({storage: storage});
+const app = express(); // Eine Express-App wird erstellt
 const PORT = 7080; // Der Port, auf dem der Server lauscht, wird festgelegt
 
 const sessions = {}; // Ein Objekt wird erstellt, um Sitzungsdaten zu speichern
 
+app.use(cors());
 app.use(express.json()); // Middleware wird verwendet, um das Parsen von JSON-Anfragen zu ermöglichen
 app.use(express.static(path.join(__dirname, 'frontend'))); // Middleware wird verwendet, um statische Dateien im 'frontend'-Verzeichnis zu servieren
 
@@ -34,6 +38,49 @@ const checkSession = (req, res, next) => {
     }
     next(); // Andernfalls wird die nächste Middleware aufgerufen
 };
+
+function login_shueler(pin) {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'jahrgang_%'", [], (err, rows) => {
+            if (err) {
+                console.error(err.message);
+                reject(err);
+            } else {
+                let promises = [];
+                rows.forEach((row) => {
+                    const query = `SELECT * FROM ${row.name} WHERE pin = ?`;
+                    promises.push(
+                        new Promise((resolveQuery, rejectQuery) => {
+                            db.all(query, [pin], (err, rows) => {
+                                if (err) {
+                                    console.error(err.message);
+                                    rejectQuery(err);
+                                } else if (rows.length > 0) {
+                                    resolveQuery(rows[0].uuid);
+                                } else {
+                                    resolveQuery(null); // Indicate user not found
+                                }
+                            });
+                        })
+                    );
+                });
+                Promise.all(promises)
+                    .then(uuids => {
+                        const foundUuid = uuids.find(uuid => uuid !== null);
+                        if (foundUuid) {
+                            resolve(foundUuid); // User found
+                        } else {
+                            reject(new Error("User not found"));
+                        }
+                    })
+                    .catch(error => {
+                        reject(error); // Reject if any error occurs during the queries
+                    });
+            }
+        });
+    });
+}
+
 
 // Route, um die Anmeldeseite zu servieren
 app.get('/', (req, res) => {
@@ -75,21 +122,21 @@ app.get('/Oko/restricted', checkSession, (req, res) => {
 // Route to handle CSV file upload
 app.post('/uploadCSV', upload.single('csvFile'), (req, res) => {
     let jahrgangName = req.body['jahrgang-name']; // Extract the Jahrgang name from the request
-/*
-    if (!jahrgangName) {
-        return res.status(400).send('Jahrgang name is required.'); // Return an error if Jahrgang name is not provided
-    }
-
-    const db = new sqlite3.Database('mos.db');
-
-    const sql_j = `INSERT INTO ${sanitizeTableName(jahrgangName)} (schueler_id, nachName, vorName, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2) VALUES (?, ?, ?, ?)`;
-    db.run(sql_j, [schueler_id, nachName, vorName, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2], function (err) {
-        if (err) {
-            return res.status(500).send(err.message);
+    /*
+        if (!jahrgangName) {
+            return res.status(400).send('Jahrgang name is required.'); // Return an error if Jahrgang name is not provided
         }
-        res.send('${sanitizeTableName(jahrgangName)} added successfully.');
-    });
-*/
+
+        const db = new sqlite3.Database('mos.db');
+
+        const sql_j = `INSERT INTO ${sanitizeTableName(jahrgangName)} (schueler_id, nachName, vorName, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2) VALUES (?, ?, ?, ?)`;
+        db.run(sql_j, [schueler_id, nachName, vorName, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2], function (err) {
+            if (err) {
+                return res.status(500).send(err.message);
+            }
+            res.send('${sanitizeTableName(jahrgangName)} added successfully.');
+        });
+    */
 
     jahrgangName = sanitizeTableName(jahrgangName);
 
@@ -97,36 +144,36 @@ app.post('/uploadCSV', upload.single('csvFile'), (req, res) => {
 
 
     // Open the CSV file and insert data into the database
-      fs.createReadStream(req.file.path,'utf8')
-          .pipe(csv())
-          .on('data', (row) => {
-              console.log(row);
-              const blub = row['S-ID;Name;Vorname;Klasse;Stufe'].split(';');
-              console.log(blub);
+    fs.createReadStream(req.file.path, 'utf8')
+        .pipe(csv())
+        .on('data', (row) => {
+            console.log(row);
+            const blub = row['S-ID;Name;Vorname;Klasse;Stufe'].split(';');
+            console.log(blub);
 
-              const sql_j = `INSERT INTO jahrgang_${sanitizeTableName(jahrgangName)} (uuid, schueler_id, nachName, vorName, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-              db.run(sql_j, [uuidv4(), blub[0], blub[1], blub[2], blub[3], blub[4], null, null, null, null, null, null], function(err) {
-                  if (err) {
-                      console.log(err);
-                      //return res.status(500).send(err.message);
-                  }
-                  //res.send('{jahrgangName} added successfully.');
-              });
+            const sql_j = `INSERT INTO jahrgang_${sanitizeTableName(jahrgangName)} (uuid, schueler_id, nachName, vorName, pin, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            db.run(sql_j, [uuidv4(), blub[0], blub[1], blub[2], "1234567", blub[3], blub[4], null, null, null, null, null, null], function (err) {
+                if (err) {
+                    console.log(err);
+                    //return res.status(500).send(err.message);
+                }
+                //res.send('{jahrgangName} added successfully.');
+            });
 
-          })
-          .on('end', () => {
-              // Remove the uploaded CSV file
-              fs.unlinkSync(req.file.path);
-              // Close the database connection after all data insertion is completed
-              db.close((err) => {
-                  if (err) {
-                      return console.error(err.message);
-                  }
-                  console.log('Database connection closed.');
-              });
-              // Respond with success message
-              res.send('CSV file uploaded successfully.');
-          });
+        })
+        .on('end', () => {
+            // Remove the uploaded CSV file
+            fs.unlinkSync(req.file.path);
+            // Close the database connection after all data insertion is completed
+            /*db.close((err) => {
+              if (err) {
+                return console.error(err.message);
+              }
+              console.log('Database connection closed.');
+            });*/
+            // Respond with success message
+            res.send('CSV file uploaded successfully.');
+        });
 });
 
 const createJahrgangsTable = (jahrgangName) => {
@@ -136,6 +183,7 @@ const createJahrgangsTable = (jahrgangName) => {
       schueler_id INTEGER,
       nachName varchar(255),
       vorName varchar(255),
+      pin varchar(255),
       akStuffe varchar(255),
       endStuffe varchar(255),
       wahl_1 varchar(255) NULL,
@@ -154,7 +202,6 @@ function sanitizeTableName(name) {
     // Remove special characters and spaces, and convert to lowercase
     return name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 }
-
 
 
 const createSportkurseTable = () => {
@@ -182,6 +229,73 @@ app.post('/addSportkurs', (req, res) => {
         res.send('Sportkurs added successfully.');
     });
 });
+
+app.get('/eintragen', (req, res) => {
+    const uuid = req.query.user;
+    const wahl1 = req.query.wahl1;
+    const wahl2 = req.query.wahl2;
+    const wahl3 = req.query.wahl3;
+    const wahl4 = req.query.wahl4;
+    const wahl5 = req.query.wahl5;
+    const wahl6 = req.query.wahl6;
+
+    if (!uuid) {
+        return res.status(400).send("user parameter is missing");
+    }
+
+    db.all("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'jahrgang_%'", [], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            rows.forEach((row) => {
+                const query = `SELECT * FROM ${row.name} WHERE uuid = ?`;
+                db.all(query, [uuid], (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+
+                    } else if (rows.length > 0) {
+                        console.log("LALALA")
+                        console.log(rows);
+                        console.log(row.name);
+                        const sql_j = `UPDATE ${row.name} SET wahl_1=?, wahl_2=?, wahl_3=?, wahl_4=?, e_wahl_1=?, e_wahl_2=? WHERE uuid=?`;
+                        db.run(sql_j, [wahl1, wahl2, wahl3, wahl4, wahl5, wahl6], function (err) {
+                            if (err) {
+                                console.log(err);
+                                //return res.status(500).send(err.message);
+                            }
+                            //res.send('{jahrgangName} added successfully.');
+                        });
+                        db.close();
+                        console.log("CLOSED");
+                    } else {
+                        console.log("NO USER") // Indicate user not found
+                        // Warum du werden ausgeführt? Keine Ahnung
+                    }
+                });
+            })
+
+        }
+    })
+})
+
+
+app.get('/login_schueler', (req, res) => {
+    const pin = req.query.pin;
+    let uuid;
+
+    if (!pin) {
+        return res.status(400).send("Pin parameter is missing");
+    }
+
+    login_shueler(pin)
+        .then(uuid => {
+            return res.status(200).send(uuid);
+        })
+        .catch(error => {
+            console.error("Error:", error.message);
+            return res.status(403).send("Incorrect password");
+        });
+})
 
 // Route to get all sportkurse
 app.get('/getSportkurse', (req, res) => {

@@ -8,74 +8,188 @@
     <title>Document</title>
 </head>
 <body>
+<div class="main">
     <div class="main">
-        <body>
-            <div class="main">
-                <div class="boxSelectContainer">
-                    <div class="box">
-                    <h1>Sportkurs Wahlen</h1>
-                    <!--Auswahlfelder der jeweiligen Sportarten-->
-                        <label for="sportart">Wahle</label>
-                        <select name="sportart" class="sportart">
-                        </select>
-                        <br>
-                        <label for="sportart">Wahle</label>
-                        <select name="sportart" class="sportart">
-                        </select>
-                        <br>
-                        <label for="sportart">Wahle</label>
-                        <select name="sportart" class="sportart">
-                        </select>
-                        <br>
-                        <label for="sportart">Wahle</label>
-                        <select name="sportart" class="sportart">
-                        </select>
-                        <br>
-                        <label for="sportart">Ersatz Wahle</label>
-                        <select name="sportart" class="sportart">
-                        </select>
-                        <br>
-                        <label for="sportart">Ersatz Wahle</label>
-                        <select name="sportart" class="sportart">     
-                        </select>
-        
-                    <div class="field input">
-                        <input type="button" class="btn" value="Submit">
-                    </div>
-                        
-                    <div class="field input">
-                        <input type="button" class="btn" value="Logout">
-                    </div>
+        <div class="boxSelectContainer">
+            <div class="box">
+                <h1>Sportkurs Wahlen</h1>
+                <!--Auswahlfelder der jeweiligen Sportarten-->
+                <label for="sportart">1. Wahl</label>
+                <select name="sportart" class="sportart">
+                    <option value="wählen">Bitte wählen</option>
+                </select>
+                <br>
+                <label for="sportart">2. Wahl</label>
+                <select name="sportart" class="sportart">
+                    <option value="wählen">Bitte wählen</option>
+                </select>
+                <br>
+                <label for="sportart">3. Wahl</label>
+                <select name="sportart" class="sportart">
+                    <option value="wählen">Bitte wählen</option>
+                </select>
+                <br>
+                <label for="sportart">4. Wahl</label>
+                <select name="sportart" class="sportart">
+                    <option value="wählen">Bitte wählen</option>
+                </select>
+                <br>
+                <label for="sportart">1. Ersatz Wahl</label>
+                <select name="sportart" class="sportart">
+                    <option value="wählen">Bitte wählen</option>
+                </select>
+                <br>
+                <label for="sportart">2. Ersatz Wahl</label>
+                <select name="sportart" class="sportart">
+                    <option value="wählen">Bitte wählen</option>
+                </select>
+
+                <div class="field input">
+                    <input type="button" class="btn" onclick="checken()" value="Submit">
                 </div>
-        <div class="boxb">
-            <!--Regeln zur Wahl der Sportkurse-->
-            <h2>Wahl der Sport-Grundkurse in der Qualifikationsphase (2024-26)
-                Allgemeine Informationen zum Fach Sport</h2>
-            <p>• Für jedes Kurshalbjahr muss ein Pflichtgrundkurs Sport gewählt werden.</p>
-            <p>• „Kurse in Sportpraxis [können] mit unterschiedlichen Kursthemen in […] festgelegten
-                Leistungsstufen I und II1 […] eingerichtet werden, Kurse in Sportpraxis können ein zweites
-                Mal belegt werden, wenn sie entweder abweichende Inhalte oder höhere
-                Leistungsanforderungen haben“. §13 Abs. 1 VO-GO</p>
-            <p>• „[…] [In] der Qualifikationsphase sind aus den [verschiedenen] Bewegungsfeldern (siehe
-                Tabelle Wahlzettel: A, B, C, D, E, F und H) mindestens zwei verpflichtend [zu belegen].“
-                Demzufolge muss mindestens eine Individualsportart (alle Bewegungsfelder außer B) belegt
-                werden. (Rahmenlehrplan für die gymnasiale Oberstufe Sport, S. 16)</p>
-            <p>• Ist Sport 4. Prüfungsfach oder Teil des 5. Prüfungsfaches, müssen zwei Sporttheoriekurse
-                parallel zu den Sportpraxiskursen belegt werden. Sporttheorie ist ein Grundkurs und wird
-                dreistündig pro Woche unterrichtet</p>
-            <p>• Bei ausreichender Teilnehmerzahl können zusätzlich bis zu zwei Zusatzkurse (Blockveran-
-                staltungen) Windsurfen (G4), Skifahren (G5) und/oder – Snowboardfahren (G7)
-                durchgeführt werden. Interesse bitte unten vermerken.</p>
-            <p>• Vor der Auswahl der Sportkurse bitte unbedingt die vollständigen Informationen zu Sport in
-                der Qualifikationsphase auf unserer Webseite durchlesen. Diese finden Sie unter
-                folgendem Link:
-                https://daten2.verwaltungsportal.de/dateien/seitengenerator/8f74d96830843c7d9c924e
-                a39b8afa2c197778/sport_oberstufe_infos_website.pdf</p>
-            <p>• Mit Ihrer Unterschrift bestätigen Sie sowohl die Wahl Ihrer Sportkurse und Kenntnis der
-                Informationen auf unserer Website.</p>
-            <h3>Die Schule kann nicht gewährleisten, dass alle Kurse immer stattfinden.</h3>
-        </div>
+
+                <div class="field input">
+                    <input type="button" class="btn" value="Logout">
+                </div>
+            </div>
+            <div class="boxb">
+                <!--Regeln zur Wahl der Sportkurse-->
+                <h2>Wahl der Sport-Grundkurse in der Qualifikationsphase (2024-26)
+                    Allgemeine Informationen zum Fach Sport</h2>
+                <p>• Für jedes Kurshalbjahr muss ein Pflichtgrundkurs Sport gewählt werden.</p>
+                <p>• „Kurse in Sportpraxis [können] mit unterschiedlichen Kursthemen in […] festgelegten
+                    Leistungsstufen I und II1 […] eingerichtet werden, Kurse in Sportpraxis können ein zweites
+                    Mal belegt werden, wenn sie entweder abweichende Inhalte oder höhere
+                    Leistungsanforderungen haben“. §13 Abs. 1 VO-GO</p>
+                <p>• „[…] [In] der Qualifikationsphase sind aus den [verschiedenen] Bewegungsfeldern (siehe
+                    Tabelle Wahlzettel: A, B, C, D, E, F und H) mindestens zwei verpflichtend [zu belegen].“
+                    Demzufolge muss mindestens eine Individualsportart (alle Bewegungsfelder außer B) belegt
+                    werden. (Rahmenlehrplan für die gymnasiale Oberstufe Sport, S. 16)</p>
+                <p>• Ist Sport 4. Prüfungsfach oder Teil des 5. Prüfungsfaches, müssen zwei Sporttheoriekurse
+                    parallel zu den Sportpraxiskursen belegt werden. Sporttheorie ist ein Grundkurs und wird
+                    dreistündig pro Woche unterrichtet</p>
+                <p>• Bei ausreichender Teilnehmerzahl können zusätzlich bis zu zwei Zusatzkurse (Blockveran-
+                    staltungen) Windsurfen (G4), Skifahren (G5) und/oder – Snowboardfahren (G7)
+                    durchgeführt werden. Interesse bitte unten vermerken.</p>
+                <p>• Vor der Auswahl der Sportkurse bitte unbedingt die vollständigen Informationen zu Sport in
+                    der Qualifikationsphase auf unserer Webseite durchlesen. Diese finden Sie unter
+                    folgendem Link:
+                    https://daten2.verwaltungsportal.de/dateien/seitengenerator/8f74d96830843c7d9c924e
+                    a39b8afa2c197778/sport_oberstufe_infos_website.pdf</p>
+                <p>• Mit Ihrer Unterschrift bestätigen Sie sowohl die Wahl Ihrer Sportkurse und Kenntnis der
+                    Informationen auf unserer Website.</p>
+                <h3>Die Schule kann nicht gewährleisten, dass alle Kurse immer stattfinden.</h3>
+            </div>
         </div>
     </div>
+</div>
 </body>
+
+<script>
+    const wahlen = ["Blub1", "Blub2", "Blub3", "Blub4", "Blub5", "Blub6", "Blub7", "Blub8"];
+
+    const wahlenSelects = document.querySelectorAll('.sportart');
+
+
+    wahlen.forEach(wahl => {
+        console.log(wahl);
+        wahlenSelects.forEach(select => {
+            const option = document.createElement('option');
+            option.value = wahl;
+            option.text = wahl;
+            select.add(option);
+        });
+    });
+
+
+    user = get_cookie("user");
+
+    console.log(user);
+
+    function eintragen() {
+
+
+
+        const selectedValues = [];
+
+        wahlenSelects.forEach(select => {
+            selectedValues.push(select.value);
+        });
+
+        console.log(selectedValues);
+
+        let url = 'http://localhost:7080/eintragen?user=' + user;
+
+        // Append selected values to the URL
+        selectedValues.forEach((value, index) => {
+            const paramName = `wahl${index + 1}`; // Create parameter names like wahl1, wahl2, etc.
+            url += `&${paramName}=${value}`; // Append to the URL with proper encoding
+        });
+
+        console.log(url)
+
+        fetch(url)
+            .then(response => {
+                console.log(response);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+                console.log('request successful:', data);
+                // Handle the response data here
+            });
+    }
+
+    function checken() {
+        // Check if all selects are not the default anymore
+        const allSelectsValid = Array.from(wahlenSelects).every(select => {
+            return select.value !== 'volvo' && select.value !== 'wählen';
+        });
+
+        // Check if no entry is more than once chosen
+        let allEntriesUnique = true;
+        const seenValues = new Set();
+        for (const select of wahlenSelects) {
+            const selectedValue = select.value;
+            if (seenValues.has(selectedValue)) {
+                allEntriesUnique = false;
+                break;
+            }
+            seenValues.add(selectedValue);
+        }
+
+        // If all checks are passed, submit the form
+        if (allSelectsValid && allEntriesUnique) {
+            // Submit the form
+            eintragen();
+            alert('Form submitted successfully!');
+        } else {
+            // Display an error message
+            alert('Please make sure all selects are not the default anymore and no entry is more than once chosen.');
+        }
+    }
+
+    function get_cookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+
+
+
+</script>
 </html>
