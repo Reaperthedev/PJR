@@ -4,21 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sportkurz Verwaltung</title>
     <script src="cookie.js"></script>
-    
 </head>
 <body>
-    <div class="Conrainer">
-        <!--Sidebar um die Listen einzusehen / zu verwalten (bleibt auch auf den anderen Seiten vorhanden)-->
-        <div class="sidebar">
-            <a href="index.html">Startseite</a>
-            <a href="sportkurs.html">Sportkurse</a>
-            <a href="jahrgang-verwalten.html">Jahrgang verwalten</a>
-            <a href="">Jahrgang einsehen</a>
-            <div class="sidebar-lower">
-                <p>Ihre Lizenz läuft in <br> </p><p class="timer">25</p><p> Tagen aus.</p>
-                <a href="#contact">Logout</a>
-            </div>
-          </div>
+    <div class="sidebar">
+        <a href="#home">Startseite</a>
+        <a href="#about">Sportkurse</a>
+        <a href="#services">Jahrgang verwalten</a>
+        <a href="#contact">Jahrgang einsehen</a>
+        <div class="sidebar-lower">
             <p>Ihre Lizenz läuft in <br> </p><p class="timer">25</p><p> Tagen aus.</p>
             <a href="#contact">Logout</a>
         </div>
@@ -31,13 +24,11 @@
                     Sportkurs
                     <input type="text">
                 </label>
-                <br>
                 <label for="sportart">Sportart</label>
                 <select name="sportart" id="sportart">
                     <option value="ballsport">Spielen</option>
                     <option value="kein-ballsport">kein Spielen</option>
                 </select>
-                <br>
                 <input type="button" value="Submit">
                 <a href="main.html">zurück</a>
             </form>

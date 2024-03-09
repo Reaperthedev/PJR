@@ -6,37 +6,35 @@
     <title>Document</title>
     <link rel="stylesheet" href="jahrgang-verwalten.css">
     <script src="cookie.js"></script>
-    
 </head>
 <body>
-    <div class="Conrainer">
-        <!--Sidebar um die Listen einzusehen / zu verwalten (bleibt auch auf den anderen Seiten vorhanden)-->
-        <div class="sidebar">
-            <a href="index.html">Startseite</a>
-            <a href="sportkurs.html">Sportkurse</a>
-            <a href="jahrgang-verwalten.html">Jahrgang verwalten</a>
-            <a href="">Jahrgang einsehen</a>
-            <div class="sidebar-lower">
-                <p>Ihre Lizenz läuft in <br> </p><p class="timer">25</p><p> Tagen aus.</p>
-                <a href="#contact">Logout</a>
-            </div>
-          </div>
+    <div class="sidebar">
+        <a href="#home">Startseite</a>
+        <a href="#about">Sportkurse</a>
+        <a href="#services">Jahrgang verwalten</a>
+        <a href="#contact">Jahrgang einsehen</a>
+        <div class="sidebar-lower">
+            <p>Ihre Lizenz läuft in <br> </p><p class="timer">25</p><p> Tagen aus.</p>
+            <a href="#contact">Logout</a>
+        </div>
+    </div>
     <div class="jahrgang">
-        <form method="">
-          <h1>Jahrgang Verwalten</h1>
-          <p>Jahregänge</p>  
-          <label>
-            Jahregang
-            <!--eintragen des Jahrganges in Form von: Von - Bis-->
-            <input type="text" placeholder="Von - Bis">
-            <br>
-            <label>Wählen Sie die Schülerliste aus
-                <!--Auswahl einer .csv Als Import der Schülerliste-->
-                <input name="datei" type="file" size="50" accept=".csv"> 
+        <form method="POST" action="/uploadCSV" enctype="multipart/form-data">
+            <h1>Jahrgang Verwalten</h1>
+            <p>Jahrgänge</p>
+            <label>
+                Jahrgang
+                <!--eintragen des Jahrganges in Form von: Von - Bis-->
+                <input type="text" name="jahrgang-name" placeholder="Von - Bis">
+                <br>
+                <label>Wählen Sie die Schülerliste aus
+                    <!--Auswahl einer .csv Als Import der Schülerliste-->
+                    <input name="csvFile" type="file" accept=".csv">
+                </label>
+                <input type="submit" value="Submit">
+                <a href="main.html">zurück</a>
             </label>
-            <input type="button" value="Submit">
-                <a href="main.html">zurück</a> 
-        </label>
         </form>
+        
     </div>
 </body>
