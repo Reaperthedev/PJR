@@ -63,6 +63,37 @@ app.get('/Oko/restricted', checkSession, (req, res) => {
   }]);
 });
 
+const createJahrgangsTable = () => {
+  const sql_j = `   
+    CREATE TABLE IF NOT EXISTS ${sanitizeTableName(jahrgangName)} (
+      schueler_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nachName varchar(255),
+      vorName varchar(255),
+      akStuffe varchar(255),
+      endStuffe varchar(255),
+      wahl_1 varchar(255),
+      wahl_2 varchar(255),
+      wahl_3 varchar(255),
+      wahl_4 varchar(255),
+      e_wahl_1 varchar(255),
+      e_wahl_2 varchar(255)
+    )
+  `;
+  return db.run(sql_j);
+};
+
+const createSportkurseTable = () => {
+  const sql = `
+    CREATE TABLE IF NOT EXISTS sportkurse (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      sportkurs TEXT,
+      sportkurskuerzel TEXT,
+      anzahl_schueler INTEGER,
+      sportart TEXT
+    )
+  `;
+  return db.run(sql);
+};
 
 // Route to handle CSV file upload
 app.post('/uploadCSV', upload.single('csvFile'), (req, res) => {
@@ -116,37 +147,6 @@ function sanitizeTableName(name) {
   return name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 }
 
-const createJahrgangsTable = () => {
-  const sql_j = `   
-    CREATE TABLE IF NOT EXISTS ${sanitizeTableName(jahrgangName)} (
-      schueler_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      nachName varchar(255),
-      vorName varchar(255),
-      akStuffe varchar(255),
-      endStuffe varchar(255),
-      wahl_1 varchar(255),
-      wahl_2 varchar(255),
-      wahl_3 varchar(255),
-      wahl_4 varchar(255),
-      e_wahl_1 varchar(255),
-      e_wahl_2 varchar(255)
-    )
-  `;
-  return db.run(sql_j);
-};
-
-const createSportkurseTable = () => {
-  const sql = `
-    CREATE TABLE IF NOT EXISTS sportkurse (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      sportkurs TEXT,
-      sportkurskuerzel TEXT,
-      anzahl_schueler INTEGER,
-      sportart TEXT
-    )
-  `;
-  return db.run(sql);
-};
 
 // Route to add a new sportkurs
 app.post('/addSportkurs', (req, res) => {
