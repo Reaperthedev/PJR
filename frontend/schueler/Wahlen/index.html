@@ -86,20 +86,43 @@
 </body>
 
 <script>
-    const wahlen = ["Blub1", "Blub2", "Blub3", "Blub4", "Blub5", "Blub6", "Blub7", "Blub8"];
+    let url = "http://localhost:7080/getSportkurse";
+    let wahla;
 
     const wahlenSelects = document.querySelectorAll('.sportart');
 
 
-    wahlen.forEach(wahl => {
-        console.log(wahl);
-        wahlenSelects.forEach(select => {
-            const option = document.createElement('option');
-            option.value = wahl;
-            option.text = wahl;
-            select.add(option);
+    fetch(url)
+        .then(response => {
+            console.log(response);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            wahla = JSON.parse(data);
+
+            const wahlen = ["Blub1", "Blub2", "Blub3", "Blub4", "Blub5", "Blub6", "Blub7", "Blub8"];
+
+
+            console.log(wahla)
+            wahla.forEach(wahl => {
+                console.log(wahl);
+                wahlenSelects.forEach(select => {
+                    const option = document.createElement('option');
+                    option.value = wahl['sportkurskuerzel'];
+                    option.text = wahl['sportkurs'];
+                    select.add(option);
+                });
+            });
+            //console.log(data);
+            //console.log('request successful:', data);
+            // Handle the response data here
         });
-    });
+
+
+
 
 
     user = get_cookie("user");
