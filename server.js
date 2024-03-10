@@ -39,6 +39,32 @@ const checkSession = (req, res, next) => {
     next(); // Andernfalls wird die nächste Middleware aufgerufen
 };
 
+function generatePin() {
+    // Create an array of digits (0-9)
+    const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    // Create an empty array to store the PIN digits
+    const pin = [];
+
+    // Loop 7 times to generate each digit of the PIN
+    for (let i = 0; i < 7; i++) {
+        // Get a random index from the digits array
+        const randomIndex = Math.floor(Math.random() * digits.length);
+
+        // Extract the digit at the random index
+        const randomDigit = digits[randomIndex];
+
+        // Remove the used digit from the array to avoid duplicates (optional)
+        digits.splice(randomIndex, 1);
+
+        // Add the random digit to the PIN array
+        pin.push(randomDigit);
+    }
+
+    // Return the generated PIN
+    return pin.join('');
+}
+
 function login_shueler(pin) {
     return new Promise((resolve, reject) => {
         db.all("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'jahrgang_%'", [], (err, rows) => {
@@ -138,9 +164,14 @@ app.post('/uploadCSV', upload.single('csvFile'), (req, res) => {
         });
     */
 
+    let pins = [];
+
     jahrgangName = sanitizeTableName(jahrgangName);
 
     createJahrgangsTable(jahrgangName);
+    console.log("Created Table "+jahrgangName);
+
+
 
 
     // Open the CSV file and insert data into the database
@@ -150,9 +181,23 @@ app.post('/uploadCSV', upload.single('csvFile'), (req, res) => {
             console.log(row);
             const blub = row['S-ID;Name;Vorname;Klasse;Stufe'].split(';');
             console.log(blub);
+            function check_pin() {
+                let pin = generatePin()
+                if (!pins.includes(pin)) {
+                    pins.push(pin);
+                    return pin;
+                } else {
+                    check_pin();
+                }
+            }
 
-            const sql_j = `INSERT INTO jahrgang_${sanitizeTableName(jahrgangName)} (uuid, schueler_id, nachName, vorName, pin, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-            db.run(sql_j, [uuidv4(), blub[0], blub[1], blub[2], "1234567", blub[3], blub[4], null, null, null, null, null, null], function (err) {
+            let pin = check_pin();
+
+            console.log(pin);
+
+
+            const sql_j = `INSERT INTO jahrgang_${jahrgangName} (uuid, schueler_id, nachName, vorName, pin, akStuffe, endStuffe, wahl_1, wahl_2, wahl_3, wahl_4, e_wahl_1, e_wahl_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            db.run(sql_j, [uuidv4(), blub[0], blub[1], blub[2], pin, blub[3], blub[4], null, null, null, null, null, null], function (err) {
                 if (err) {
                     console.log(err);
                     //return res.status(500).send(err.message);
